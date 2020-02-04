@@ -149,14 +149,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 void draw(HDC hdc, Shape s) {
 	//Rectangle(hdc, s.left, s.top, s.right, s.bottom);
 	if (s.shapeType == 0) {
-		Polygon(hdc, s.getPoints(), s.getSize());
+		Polygon(hdc, s.getPoints(), s.get_size());
 	} else if (s.shapeType == rectangle) {
-		RectangleShape rect = s.toRect();
-		int* data = rect.getPointData();
+		RectangleShape rect = s.to_rect();
+		int* data = rect.get_point_data();
 		
 		Rectangle(hdc, data[0], data[3], data[2], data[1]);
 	} else// if ()
 	{
+		
 		//Ellipse()
 	}
 }
