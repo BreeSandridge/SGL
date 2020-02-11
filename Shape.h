@@ -47,8 +47,8 @@ public:
 	void set_top_right(int x, int y);
 	void set_rect(int bot_left_x, int bot_left_y, int top_right_x, int top_right_y);
 
-	void setBotLeft(POINT point);
-	void setTopRight(POINT point);
+	void set_bot_left(POINT point);
+	void set_top_right(POINT point);
 	void setRect(POINT bot_Left, POINT top_right);
 
 

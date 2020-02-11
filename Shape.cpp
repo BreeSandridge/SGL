@@ -173,6 +173,16 @@ void Circle::set_rect(const int bot_left_x, const int bot_left_y, const int top_
 	vertices[TopRight] = { top_right_x, top_right_y };
 }
 
+void Circle::set_bot_left(POINT point) {
+	vertices[BotLeft] = point;
+}
+
+void Circle::set_top_right(POINT point) {
+	vertices[TopRight] = point;
+}
+
+
+
 
 
 
