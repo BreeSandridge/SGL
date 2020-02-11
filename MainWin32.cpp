@@ -12,6 +12,7 @@
 // The main window class name.
 static TCHAR szWindowClass[] = _T("TEST");
 
+
 // The string that appears in the application's title bar.
 static TCHAR szTitle[] = _T("Basic Windows Application");
 
@@ -24,6 +25,7 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 Pipeline p;
 
 //Config c = Config();
+
 
 
 
@@ -107,7 +109,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
 
 
-	return (int)msg.wParam;
+	return int(msg.wParam);
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -125,13 +127,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 
 		hdc = BeginPaint(hWnd, &ps);
+		SetGraphicsMode(hdc, GM_ADVANCED);
 
 		// Paint the game
 		//draw(hdc);
-		for (int i = 0; i < p.shapes.size(); i++) {
-			draw(hdc, p.shapes.at(i));
+	
+		for (const auto& shape : p.shapes) {
+			draw(hdc, shape);
 		}
-
+		
 		EndPaint(hWnd, &ps);
 
 		break;
@@ -149,16 +153,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 void draw(HDC hdc, Shape s) {
 	//Rectangle(hdc, s.left, s.top, s.right, s.bottom);
 	if (s.shapeType == 0) {
-		Polygon(hdc, s.getPoints(), s.get_size());
+		Polygon(hdc, s.get_points(), s.get_size());
 	} else if (s.shapeType == rectangle) {
 		RectangleShape rect = s.to_rect();
 		int* data = rect.get_point_data();
 		
 		Rectangle(hdc, data[0], data[3], data[2], data[1]);
-	} else// if ()
-	{
+	} else if (s.shapeType == circle) {
+		Circle c = s.to_circle();
+		int* data = c.get_point_data();
+		Ellipse(hdc, data[c.left], data[c.top], data[c.right], data[c.bot]);
 		
-		//Ellipse()
 	}
 }
 

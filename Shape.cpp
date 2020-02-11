@@ -11,8 +11,8 @@ Shape::Shape(const RectangleShape& rect) {
 	vertices = rect.vertices;
 }
 
-POINT* Shape::getPoints() {
-	auto* points = new POINT [vertices.size()];
+POINT* Shape::get_points() {
+	const auto points = new POINT [vertices.size()];
 
 	for (int i = 0; i < vertices.size(); i++) {
 		points[i] = vertices[i];
@@ -20,7 +20,6 @@ POINT* Shape::getPoints() {
 
 	return points;
 }
-
 
 int Shape::get_size() const {
 	return vertices.size();
@@ -30,7 +29,9 @@ RectangleShape Shape::to_rect() {
 	return {vertices[0], vertices[1]};
 }
 
-
+Circle Shape::to_circle() {
+	return { vertices[0], vertices[1] };
+}
 
 RectangleShape::RectangleShape(const POINT bot_left, const POINT top_right) {
 	shapeType = rectangle;
@@ -133,11 +134,11 @@ Circle::Circle(const POINT bot_left, const POINT top_right) {
 }
 
 POINT Circle::get_top_right() {
-	return vertices[TopRight];
+	return vertices[top_right_];
 }
 
 POINT Circle::get_bot_left() {
-	return vertices[BotLeft];
+	return vertices[bot_left_];
 }
 
 POINT* Circle::get_points() {
@@ -154,40 +155,64 @@ int* Circle::get_point_data() {
 	p[3] = get_top_right().x;
 	p[1] = get_top_right().y;
 	return p;
-
-
 }
 
 void Circle::set_bot_left(const int x, const int y) {
-	vertices[BotLeft].x = x;
-	vertices[BotLeft].y = y;
+	vertices[bot_left_].x = x;
+	vertices[bot_left_].y = y;
 }
 
 void Circle::set_top_right(const int x, const int y) {
-	vertices[TopRight].x = x;
-	vertices[TopRight].y = y;
+	vertices[top_right_].x = x;
+	vertices[top_right_].y = y;
 }
 
 void Circle::set_rect(const int bot_left_x, const int bot_left_y, const int top_right_x, const int top_right_y) {
-	vertices[BotLeft] = { bot_left_x, bot_left_y };
-	vertices[TopRight] = { top_right_x, top_right_y };
+	vertices[bot_left_] = { bot_left_x, bot_left_y };
+	vertices[top_right_] = { top_right_x, top_right_y };
 }
 
-void Circle::set_bot_left(POINT point) {
-	vertices[BotLeft] = point;
+void Circle::set_bot_left(const POINT point) {
+	vertices[bot_left_] = point;
 }
 
-void Circle::set_top_right(POINT point) {
-	vertices[TopRight] = point;
+void Circle::set_top_right(const POINT point) {
+	vertices[top_right_] = point;
 }
 
+void Circle::set_rect(const POINT bot_left, const POINT top_right) {
+	vertices[bot_left_] = bot_left;
+	vertices[top_right_] = top_right;
+}
 
+void Circle::set_bot_left_x(int x) {
+	vertices[bot_left_].x = x;
+}
 
+void Circle::set_top_right_x(int x) {
+	vertices[top_right_].x;
+}
 
+void Circle::set_bot_left_y(int y) {
+	vertices[bot_left_].y = y;
+}
 
+void Circle::set_top_right_y(int y) {
+	vertices[top_right_].y = y;
+}
 
+int Circle::get_bot_left_x() {
+	return vertices[bot_left_].x;
+}
 
+int Circle::get_bot_left_y() {
+	return vertices[bot_left_].y;
+}
 
+int Circle::get_top_right_x() {
+	return vertices[top_right_].x;
+}
 
-
-
+int Circle::get_top_right_y() {
+	return vertices[top_right_].y;
+}
