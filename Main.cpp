@@ -3,6 +3,7 @@
 #include "Pipeline.h"
 #include <iostream>
 
+
 Pipeline view(int argc, char* argv[]) {
 
 	Pipeline p = Pipeline();
@@ -19,7 +20,9 @@ Pipeline view(int argc, char* argv[]) {
 	s.vertices.push_back(p3);
 	*/
 	const auto c = Circle({500,500}, {200,200});
+	const auto l = line(200, 200, 300, 500);
 	p.shapes.push_back(c);
+	p.lines.push_back(l);
 
 /*
 	POINT BL = { p.config.currentResolutionWidth*.7,p.config.currentResolutionHeight*.5 };

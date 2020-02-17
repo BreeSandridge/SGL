@@ -2,5 +2,5 @@
 
 Pipeline::Pipeline() {
 	shapes = std::vector<Shape>();
-	config = Config();
+	config = config();
 }

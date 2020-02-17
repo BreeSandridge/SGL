@@ -6,6 +6,7 @@
 
 #include "Main.h"
 
+// USE GDI+
 
 // Global variables
 
@@ -28,7 +29,7 @@ Pipeline p;
 
 
 
-
+void draw_line(HDC hdc, line l);
 void draw(HDC hdc, Shape s);
 
 ////////////////////////////////////////////////////////////
@@ -74,7 +75,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		szTitle,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		p.config.currentResolutionWidth, p.config.currentResolutionHeight,
+		p.config.current_resolution_width, p.config.current_resolution_height,
 		NULL,
 		NULL,
 		hInstance,
@@ -127,10 +128,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 
 		hdc = BeginPaint(hWnd, &ps);
-		SetGraphicsMode(hdc, GM_ADVANCED);
-
+		
 		// Paint the game
 		//draw(hdc);
+		//
+
+		for (const auto& l : p.lines) {
+			draw_line(hdc, l);
+		}
 	
 		for (const auto& shape : p.shapes) {
 			draw(hdc, shape);
@@ -150,20 +155,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	return 0;
 }
 
-void draw(HDC hdc, Shape s) {
+void draw_line(const HDC hdc, const line l) {
+	MoveToEx(hdc, l.start_x, l.start_y, nullptr);
+	LineTo(hdc, l.end_x, l.end_y);
+}
+
+void draw(const HDC hdc, Shape s) {
 	//Rectangle(hdc, s.left, s.top, s.right, s.bottom);
 	if (s.shapeType == 0) {
 		Polygon(hdc, s.get_points(), s.get_size());
 	} else if (s.shapeType == rectangle) {
 		RectangleShape rect = s.to_rect();
 		int* data = rect.get_point_data();
-		
 		Rectangle(hdc, data[0], data[3], data[2], data[1]);
 	} else if (s.shapeType == circle) {
 		Circle c = s.to_circle();
-		int* data = c.get_point_data();
+		const auto data = c.get_point_data();
 		Ellipse(hdc, data[c.left], data[c.top], data[c.right], data[c.bot]);
-		
 	}
 }
 

@@ -5,11 +5,14 @@
 #include "Config.h"
 #include "Shape.h"
 #include <vector>
+#include "Line.h"
+
 
 class Pipeline {
 public:
+	std::vector<line> lines;
 	std::vector<Shape> shapes;
-	Config config;
+	config config;
 	Pipeline();
 
 };
