@@ -1,0 +1,5 @@
+﻿  one_pixel.cpp
+  two_smoke.cpp
+  Generating Code...
+C:\Users\peyto\source\repos\ISP\SingleFileGraphics\2FileGraphics\two_smoke.cpp(213,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  2FileGraphics.vcxproj -> C:\Users\peyto\source\repos\ISP\SingleFileGraphics\2FileGraphics\Debug\2FileGraphics.exe
