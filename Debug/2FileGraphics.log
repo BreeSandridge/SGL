@@ -1,6 +1,0 @@
-﻿  two_smoke.cpp
-E:\Projects\C++\SGL\two_smoke.cpp(213,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
-  GraphicsLib.cpp
-  one_pixel.cpp
-  Generating Code...
-  2FileGraphics.vcxproj -> E:\Projects\C++\SGL\Debug\2FileGraphics.exe
