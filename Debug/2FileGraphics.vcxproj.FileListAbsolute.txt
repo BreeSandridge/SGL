@@ -1,0 +1,2 @@
+E:\Projects\C++\SGL\Debug\2FileGraphics.exe
+E:\Projects\C++\SGL\Debug\2FileGraphics.pdb
