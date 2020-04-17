@@ -110,35 +110,6 @@ static void AddBufferedKey(char c)
 //
 // 
 
-
-// Creates a color using a (hue, saturation, value) triple instead of (red, green, blue).
-//
-// - S and V are in the usual [0, 256) range, but H is in degrees: [0, 360)
-//
-Color MakeColorHSV(int h, int s, int v);
-
-// If your program is going to be writing every pixel every frame, this is a simple optimization
-// over issuing Width*Height calls to SetPixel.  Instead of spending time on the thread-safety
-// overhead Width*Height times, the entire operation is performed in bulk behind a single lock.
-//
-// The first element in "screen" is the top-left (0, 0) pixel.  The next is (1, 0) and so on,
-// wrapping automatically to the next row once you reach (Width - 1, 0) to (0, 1).  The passed-
-// in screen must have example Width*Height elements!
-//
-// To create a screen that is the right size (and fill it with a default color):
-//    std::vector<Color> screen(Width * Height, Black);
-//
-// To get the array index of a particular pixel:
-//    int index = y*Width + x;
-//
-// Which can then be used directly to set a color:
-//    screen[index] = LightBlue;
-//
-// And once you've placed every color value:
-//    Present(screen);
-//
-void Present(const std::vector<Color>& screen);
-
 // Sometimes immediate input (where the most-recent keypress overwrites all others) isn't the
 // best fit.  If you don't want to miss any input, use this instead of LastKey.  Up to one
 // hundred or so of the most recent keypresses are stored in a queued and can be retrieved
@@ -170,40 +141,6 @@ Color MakeColor(int r, int g, int b)
 	return (0xFF << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
 }
 
-Color MakeColorHSV(int hue, int sat, int val)
-{
-	float h = fmod(hue / 360.0f, 1.0f);
-	float s = min(1.0f, max(0.0f, sat / 255.0f));
-	float v = min(1.0f, max(0.0f, val / 255.0f));
-
-	if (s == 0)
-	{
-		int gray = int(v * 255);
-		return MakeColor(gray, gray, gray);
-	}
-
-	float var_h = h * 6;
-	int var_i = int(var_h);
-	float var_1 = v * (1 - s);
-	float var_2 = v * (1 - s * (var_h - var_i));
-	float var_3 = v * (1 - s * (1 - (var_h - var_i)));
-
-	float var_r;
-	float var_g;
-	float var_b;
-
-	switch (var_i)
-	{
-	case 0:  var_r = v;     var_g = var_3; var_b = var_1; break;
-	case 1:  var_r = var_2; var_g = v;     var_b = var_1; break;
-	case 2:  var_r = var_1; var_g = v;     var_b = var_3; break;
-	case 3:  var_r = var_1; var_g = var_2; var_b = v;     break;
-	case 4:  var_r = var_3; var_g = var_1; var_b = v;     break;
-	default: var_r = v;     var_g = var_1; var_b = var_2; break;
-	}
-
-	return MakeColor(int(var_r * 255), int(var_g * 255), int(var_b * 255));
-}
 
 void UseAntiAliasing(bool enabled)
 {
@@ -212,6 +149,13 @@ void UseAntiAliasing(bool enabled)
 
 	graphics->SetSmoothingMode(enabled ? Gdiplus::SmoothingModeAntiAlias : Gdiplus::SmoothingModeNone);
 }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Drawing Backend
+///////////////////////////////////////////////////////////////////////////////
 
 void SetPixel(int x, int y, Color c)
 {
@@ -228,29 +172,6 @@ void SetPixel(int x, int y, Color c)
 	bitmap->UnlockBits(&d);
 
 	SetDirty();
-}
-
-void Present(const std::vector<Color>& screen)
-{
-	if (screen.size() != Width * Height) return;
-
-	lock_guard<mutex> lock(bitmapLock);
-	if (!bitmap) return;
-
-	Gdiplus::BitmapData d;
-	Gdiplus::Rect r(0, 0, Width, Height);
-	bitmap->LockBits(&r, Gdiplus::ImageLockModeWrite, bitmap->GetPixelFormat(), &d);
-
-	auto dstLine = reinterpret_cast<uint32_t*>(d.Scan0);
-	for (int y = 0; y < Height; ++y)
-	{
-		auto srcLine = &screen[Width * y];
-		memcpy(dstLine, srcLine, Width * sizeof(uint32_t));
-		dstLine += d.Stride / 4;
-	}
-
-	bitmap->UnlockBits(&d);
-	dirty = true;
 }
 
 Color GetPixel(int x, int y)
@@ -318,6 +239,10 @@ void DrawArc(int x, int y, float radius, float thickness, Color c, float startRa
 	SetDirty();
 }
 
+void DrawLine(Vertex v1, Vertex v2, Color c)
+{
+}
+
 void DrawRectangle(int x, int y, int width, int height, Color c, bool filled)
 {
 	lock_guard<mutex> lock(bitmapLock);
@@ -343,6 +268,37 @@ void DrawRectangle(int x, int y, int width, int height, Color c, bool filled)
 
 	SetDirty();
 }
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Drawing Pipeline
+///////////////////////////////////////////////////////////////////////////////
+
+void DrawPoint(Point p) {
+	SetPixel(p.x, p.y, p.color);
+}
+
+void DrawPoint(int x, int y, Color c) {
+	SetPixel(x, y, c);
+}
+
+void DrawLine(Vertex v1, Vertex v2, int thickness, Color c) {
+	DrawLine(v1.x, v1.y, v2.x, v2.y, thickness, c);
+}
+
+void DrawLine(Vertex v1, Vertex v2, int thickness) {
+	DrawLine(v1.x, v1.y, v2.x, v2.y, thickness, White);
+}
+
+void DrawLine(Vertex v1, Vertex v2, Color c) {
+	DrawLine(v1.x, v1.y, v2.x, v2.y, 3, c);
+}
+
+void DrawLine(Vertex v1, Vertex v2) {
+	DrawLine(v1.x, v1.y, v2.x, v2.y, 3, White);
+}
+
+
 
 
 // For a line-by-line breakdown of this single-function text rendering library, see the Text example.  (This version has
@@ -536,9 +492,4 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int cmdShow)
 
 
 
-
-
-///////////////////////////////////////////////////////////////////
-/////////////// VERSION 1.2 ///////////////////////////////////////
-///////////////////////////////////////////////////////////////////
 

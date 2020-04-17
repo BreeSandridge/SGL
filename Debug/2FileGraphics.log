@@ -1,5 +1,3 @@
 ﻿  GraphicsLib.cpp
-  one_pixel.cpp
-E:\Projects\C++\SGL\one_pixel.cpp(11,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
-  Generating Code...
-  2FileGraphics.vcxproj -> E:\Projects\C++\SGL\Debug\2FileGraphics.exe
+E:\Projects\C++\SGL\GraphicsLib.cpp(293,46): error C2084: function 'void DrawLine(Vertex,Vertex,Color)' already has a body
+E:\Projects\C++\SGL\GraphicsLib.cpp(242): message : see previous definition of 'DrawLine'

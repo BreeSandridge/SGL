@@ -16,8 +16,11 @@
     <Filter Include="Source Files\Examples">
       <UniqueIdentifier>{f203425a-b578-4fa6-b6d0-a52749744752}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shapes">
-      <UniqueIdentifier>{287310f8-0f88-4073-9c72-2296ebbf7ab3}</UniqueIdentifier>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{aad30f35-c572-4308-a67a-091b26de2520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils\Geometry">
+      <UniqueIdentifier>{24789a22-962c-45de-a28f-153769d3bce0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +34,18 @@
   <ItemGroup>
     <ClInclude Include="GraphicsLib.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Colors.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files\Utils\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Header Files\Utils\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Header Files\Utils\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

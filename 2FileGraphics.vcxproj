@@ -143,7 +143,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Colors.h" />
     <ClInclude Include="GraphicsLib.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsLib.cpp" />
