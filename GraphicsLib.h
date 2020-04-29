@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 
 
@@ -26,9 +27,9 @@
 //
 // (All of the examples assume a Width of 160 and Height of 120)
 //
-static constexpr int Width = 160;
-static constexpr int Height = 120;
-static constexpr int PixelScale = 5;
+static constexpr int Width = 1080;
+static constexpr int Height = 1620;
+static constexpr int PixelScale = 1;
 
 
 
@@ -109,6 +110,12 @@ void Clear(Color c = Black);
 //     if (GetPixel(playerX, playerY) == Black) ...
 //
 Color GetPixel(int x, int y);
+
+
+// Draw String Method
+void DrawString(int x, int y, const std::string& s, const Color c, bool centered);
+
+void DrawGDIString(float x, float y, int fontSize, Color c, std::string s);
 
 
 

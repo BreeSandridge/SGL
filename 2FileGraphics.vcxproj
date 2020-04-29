@@ -144,9 +144,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsLib.h" />
+    <ClInclude Include="Nodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsLib.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="one_pixel.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

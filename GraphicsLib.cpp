@@ -12,6 +12,9 @@
 #include <thread>
 #include <numeric>
 #include <algorithm>
+#include <cstring>
+
+#include <codecvt>
 
 
 
@@ -345,6 +348,43 @@ void DrawRectangle(int x, int y, int width, int height, Color c, bool filled)
 }
 
 
+void DrawGDIString(float x, float y, int fontSize, Color c, string s) {
+	
+	// Multithreading
+	lock_guard<mutex> lock(bitmapLock);
+	if (!bitmap) return;
+
+
+	// Convert regular UTF-8 into suitible wstring
+	// Windows functions use wide characters and strings rather than traditional UTF-8
+	// Convert function can be found at https://ryanclouser.com/2016/08/11/C-11-Convert-to-from-UTF-8-wchar-t/
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> convert;
+	wstring wstr = convert.from_bytes(s);
+	
+	// We need to find the size in order to convert it into a WCHAR[]
+	// WCHAR is a windows macro for wchar_t, dont question it. There is actually no difference
+	// other than the windows devs hating me and wanting to cause me unnecesary confusion
+	int w_size = wstr.size();
+	WCHAR* WCHAR_arr = new WCHAR[w_size];
+
+	// converts each character from the wstring to the WCHAR*
+	for (int i = 0; i < w_size; i++) {
+		WCHAR_arr[i] = wstr[i];
+	}
+
+	// Initialize arguments.
+	Gdiplus::Font myFont(L"Arial", fontSize);
+	Gdiplus::PointF origin(x, y);
+	Gdiplus::SolidBrush blackBrush(c);
+
+	// Tell the graphics object to draw the string
+	graphics->DrawString(WCHAR_arr, w_size, &myFont, origin, &blackBrush);
+
+	SetDirty();
+}
+
+
+
 // For a line-by-line breakdown of this single-function text rendering library, see the Text example.  (This version has
 // been compacted a bit and made a little more generic so we can draw directly into the density field in the smoke example.)
 void DrawString(int x, int y, const string& s, const Color c, bool centered, function<void(int x, int y, Color c)> customDraw)
@@ -359,8 +399,7 @@ void DrawString(int x, int y, const string& s, const Color c, bool centered, fun
 	};
 
 	if (centered) x -= accumulate(s.begin(), s.end(), 0, [](int a, char b) { return a + (b < 32 ? 0 : (Font[b - 32] >> 28) + 1); }) / 2;
-	for (auto i : s)
-	{
+	for (auto i : s) {
 		if (i < 32 || i > 127) continue;
 		uint32_t glyph = Font[i - 32];
 		const int width = glyph >> 28;
@@ -369,8 +408,16 @@ void DrawString(int x, int y, const string& s, const Color c, bool centered, fun
 	}
 }
 
+
+
+
+
+
 // Windows has their own SetPixel in global scope, so we need the static_cast to disambiguate from ours
 void DrawString(int x, int y, const string& s, const Color c, bool centered) { DrawString(x, y, s, c, centered, static_cast<void(*)(int, int, Color)>(SetPixel)); }
+
+
+
 
 void Clear(Color c)
 {
