@@ -6,8 +6,9 @@
 // Draws a single pixel to the middle of the screen.
 //
 
-
+/*
 void main()
 {
 	SetPixel(80, 60, Yellow);
 }
+*/

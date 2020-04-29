@@ -16,9 +16,6 @@
     <Filter Include="Source Files\Examples">
       <UniqueIdentifier>{f203425a-b578-4fa6-b6d0-a52749744752}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shapes">
-      <UniqueIdentifier>{287310f8-0f88-4073-9c72-2296ebbf7ab3}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsLib.cpp">
@@ -27,10 +24,16 @@
     <ClCompile Include="one_pixel.cpp">
       <Filter>Source Files\Examples</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsLib.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-﻿  GraphicsLib.cpp
-  one_pixel.cpp
-E:\Projects\C++\SGL\one_pixel.cpp(11,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
-  Generating Code...
+﻿  Main.cpp
+E:\Projects\C++\SGL\Main.cpp(47,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\Projects\C++\SGL\Main.cpp(47,17): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\Projects\C++\SGL\Main.cpp(54,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
   2FileGraphics.vcxproj -> E:\Projects\C++\SGL\Debug\2FileGraphics.exe
