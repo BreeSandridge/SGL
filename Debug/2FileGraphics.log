@@ -1,5 +1,7 @@
 ﻿  Main.cpp
-E:\Projects\C++\SGL\Main.cpp(47,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\Projects\C++\SGL\Main.cpp(47,17): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\Projects\C++\SGL\Main.cpp(54,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+E:\Projects\C++\SGL\Main.cpp(97,34): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+E:\Projects\C++\SGL\Main.cpp(97,22): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+E:\Projects\C++\SGL\Main.cpp(98,34): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+E:\Projects\C++\SGL\Main.cpp(98,22): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+E:\Projects\C++\SGL\Main.cpp(152,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
   2FileGraphics.vcxproj -> E:\Projects\C++\SGL\Debug\2FileGraphics.exe
